@@ -29,15 +29,31 @@ int main(int argc , char *argv[])
     //Prepare to trade information with client
     fd_set incoming;
     int cl_sock;
+    int inc_sock;
     char listings[4096];
 
+    int co
     //Enter infinite loop to begin accepting connection requests and data transmission
     while(1){
 
         //Reset socket inbetween different client communications
         FD_ZERO(&incoming);
         FD_SET(sock, &incoming);
+        FD_SET(cl_sock, &incoming);
         
+
+        //Wait for activity on potential sockets, produce error if errno code is not EINTR
+        if(select(sock + 1, &incoming, NULL, NULL, NULL) < 0 && errno != EINTR){
+            printf("Error in connecting to client over port...\n")
+        }
+
+        //If connection is succesful, begin bit stream between client and server
+        if(FD_ISSET(sock, &incoming)){
+            
+            //Accept the incoming socket request and send message to the client
+            inc_sock = accept(sock, (struct sockaddr *)&addr, (socklen_t*)&length_addr);
+            send(inc_sock, message, strlen(message), 0);
+        }
 
     }
 
