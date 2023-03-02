@@ -1,5 +1,37 @@
 #include "server.h"
 
+
+
+
+void write_file(int sockfd)
+{
+    int n; 
+    FILE *fp;
+    char *filename = "recv.txt";
+    char buffer[SIZE];
+
+    fp = fopen(filename, "w");
+    if(fp==NULL)
+    {
+        perror("[-]Error in creating file.");
+        exit(1);
+    }
+    while(1)
+    {
+        n = recv(sockfd, buffer, SIZE, 0);
+        if(n<=0)
+        {
+            break;
+            return;
+        }
+        fprintf(fp, "%s", buffer);
+        bzero(buffer, SIZE);
+    }
+    return;
+    
+}
+
+
 int main(int argc , char *argv[])
 {
     //User defined port to initiate connections
@@ -26,8 +58,8 @@ int main(int argc , char *argv[])
     //Bind Socket to the specified PORT
     bind(server_sock, (struct sockaddr *)&addr, sizeof(addr));
     printf("PORT %d Open, ready to connect!\n", atoi(argv[1]));
-
-    listen(server_sock, 3);
+    //Setting listening backlog
+    listen(server_sock, 5);
 
 
     //Prepare to trade information with client
@@ -62,9 +94,12 @@ int main(int argc , char *argv[])
             
             //Accept the incoming socket request and send message to the client
             incoming_sock = accept(server_sock, (struct sockaddr *)&addr, (socklen_t*)&length_addr);
-            int valread = read(incoming_sock, listings, 4096);
-            send(incoming_sock, argv[2], strlen(argv[2]), 0);
-        
+            //int valread = read(incoming_sock, listings, 4096);
+            //printf("%s\n", listings);
+            //send(incoming_sock, argv[2], strlen(argv[2]), 0);
+
+            write_file(incoming_sock);
+
             new_sd = client_sock;
         
         
