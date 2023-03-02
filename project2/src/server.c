@@ -18,15 +18,16 @@ int main(int argc , char *argv[])
         addr.sin_port = PORT; //Define socket port
         addr.sin_addr.s_addr = INADDR_ANY; //To avoid binding socket to a specific IP address, better porting from machine to machine
 
-    //define socket descriptor o utilise send() and recv(), SOCK_STREAM and not SOCK_DGRAM as we want to connect to client
-    int server_sock = socket(AF_INET,SOCK_STREAM, 0);
+    //define socket descriptor to utilise send() and recv(), SOCK_STREAM and not SOCK_DGRAM as we want to connect to client
+    int server_sock = socket(AF_INET, SOCK_STREAM, 0);
     //Allow for multiple client connections
     int option = 1;
-    setsockopt(server_sock, SOL_SOCKET, SO_REUSEADDR, (char *)&option, sizeof(option));
+    setsockopt(server_sock, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, (char *)&option, sizeof(option));
     //Bind Socket to the specified PORT
     bind(server_sock, (struct sockaddr *)&addr, sizeof(addr));
     printf("PORT %d Open, ready to connect!\n", atoi(argv[1]));
 
+    listen(server_sock, 3);
 
 
     //Prepare to trade information with client
