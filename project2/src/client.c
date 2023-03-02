@@ -9,7 +9,19 @@
 void send_file(FILE *fp, int sockfd)
 {
     char data[SIZE] = {0};
+    char c;
+    int i = 0;
+    while(c != EOF){
+        c = fgetc(fp);
+        if(c == EOF)
+            break;
+        data[i] = c;
+        i++;
+    }
+    data[i+1] = '\0';
+    send(sockfd, data, sizeof(data), 0);
 
+/*
     while(fgets(data, SIZE, fp)!=NULL)
     {
         if(send(sockfd, data, sizeof(data), 0)== -1)
@@ -17,8 +29,11 @@ void send_file(FILE *fp, int sockfd)
             perror("[-] Error in sendung data");
             exit(1);
         }
-        bzero(data, SIZE);
+        printf("%s", data);
+        //bzero(data, SIZE);
     }
+    send(sockfd, data, sizeof(data), 0);
+    */
 }
 
 int main()
@@ -40,7 +55,7 @@ int main()
      printf("[+]Server socket created. \n");
 
      server_addr.sin_family = AF_INET;
-     server_addr.sin_port = port;
+     server_addr.sin_port = htons(port);
      server_addr.sin_addr.s_addr = inet_addr(ip);
 
      e = connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr));
@@ -57,7 +72,10 @@ int main()
          exit(1);
      }
      send_file(fp,sockfd);
-     printf("[+] File data send successfully. \n");
+     printf("[+]File data send successfully. \n");
+     char buffer[1024] = { 0 };
+     int re = read(sockfd, buffer, 1024);
+     printf("%s\n", buffer);
      close(sockfd);
      printf("[+]Disconnected from the server. \n");
      return 0;

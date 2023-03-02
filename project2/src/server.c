@@ -3,34 +3,6 @@
 
 
 
-void write_file(int sockfd)
-{
-    int n; 
-    FILE *fp;
-    char *filename = "recv.txt";
-    char buffer[SIZE];
-
-    fp = fopen(filename, "w");
-    if(fp==NULL)
-    {
-        perror("[-]Error in creating file.");
-        exit(1);
-    }
-    while(1)
-    {
-        n = recv(sockfd, buffer, SIZE, 0);
-        if(n<=0)
-        {
-            break;
-            return;
-        }
-        fprintf(fp, "%s", buffer);
-        bzero(buffer, SIZE);
-    }
-    return;
-    
-}
-
 
 int main(int argc , char *argv[])
 {
@@ -68,6 +40,8 @@ int main(int argc , char *argv[])
     int incoming_sock = 0;
     char listings[4096];
     int length_addr = sizeof(addr);
+    FILE * write;
+    write = fopen("resources.txt", 'w');
 
     //Enter infinite loop to begin accepting connection requests and data transmission
     while(1){
@@ -94,9 +68,9 @@ int main(int argc , char *argv[])
             
             //Accept the incoming socket request and send message to the client
             incoming_sock = accept(server_sock, (struct sockaddr *)&addr, (socklen_t*)&length_addr);
-            //int valread = read(incoming_sock, listings, 4096);
-            //printf("%s\n", listings);
-            //send(incoming_sock, argv[2], strlen(argv[2]), 0);
+            int valread = read(incoming_sock, listings, 4096);
+            fprintf(write, "%s", listings);
+            send(incoming_sock, argv[2], strlen(argv[2]), 0);
 
             write_file(incoming_sock);
 
