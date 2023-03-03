@@ -2,10 +2,30 @@
 // programming
 #include <arpa/inet.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #define PORT 8888
+#define SIZE 1024
+
+
+void send_file(FILE *fp, int sockfd)
+{
+    char data[SIZE] = {0};
+
+    while(fgets(data, SIZE, fp)!=NULL)
+    {
+        if(send(sockfd, data, sizeof(data), 0)== -1)
+        {
+            perror("[-] Error in sendung data");
+            exit(1);
+        }
+        bzero(data, SIZE);
+    }
+}
+
+
 
 int main(int argc, char const* argv[])
 {
@@ -17,6 +37,10 @@ int main(int argc, char const* argv[])
 		printf("\n Socket creation error \n");
 		return -1;
 	}
+
+	FILE *fp;
+    char *filename = "test.txt";
+	fp = fopen(filename, "r");
 
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(PORT);
@@ -37,7 +61,8 @@ int main(int argc, char const* argv[])
 		printf("\nConnection Failed \n");
 		return -1;
 	}
-	send(client_fd, hello, strlen(hello), 0);
+	//send(client_fd, hello, strlen(hello), 0);
+	send_file(fp,client_fd);
 	printf("Hello message sent\n");
 	valread = read(client_fd, buffer, 1024);
 	printf("%s\n", buffer);

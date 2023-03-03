@@ -20,32 +20,17 @@ void send_file(FILE *fp, int sockfd)
     }
     data[i+1] = '\0';
     send(sockfd, data, sizeof(data), 0);
-
-/*
-    while(fgets(data, SIZE, fp)!=NULL)
-    {
-        if(send(sockfd, data, sizeof(data), 0)== -1)
-        {
-            perror("[-] Error in sendung data");
-            exit(1);
-        }
-        printf("%s", data);
-        //bzero(data, SIZE);
-    }
-    send(sockfd, data, sizeof(data), 0);
-    */
 }
 
-int main()
-{
-    char *ip = "192.168.158.172";
+int main(int argc, char* argv[]){
+    char *ip = "127.0.0.1";
     int port = 8888;
     int e;
 
     int sockfd;
     struct sockaddr_in server_addr;
     FILE *fp;
-    char *filename = "test.txt";
+    char *filename = argv[1];
      sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if(sockfd<0)
     {
