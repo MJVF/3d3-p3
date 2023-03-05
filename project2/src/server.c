@@ -10,15 +10,7 @@
 
 int main(int argc , char *argv[]){
 
-    //Aesthetic detail
-    printf("%s  ____  _____ ____     %s        _____           _           _   ___  \n", CGRN, CBLU);
-    printf("%s |___ \\|  __ \\___ \\    %s       |  __ \\         (_)         | | |__ \\ \n", CGRN, CBLU);
-    printf("%s   __) | |  | |__) | %s ______ %s | |__) | __ ___  _  ___  ___| |_   ) |\n", CGRN, CNRM, CBLU);
-    printf("%s  |__ <| |  | |__ <  %s|______|%s |  ___/ '__/ _ \\| |/ _ \\/ __| __| / / \n", CGRN, CNRM, CBLU);
-    printf("%s  ___) | |__| |__) |   %s       | |   | | | (_) | |  __/ (__| |_ / /_ \n", CGRN, CBLU);
-    printf("%s |____/|_____/____/    %s       |_|   |_|  \\___/| |\\___|\\___|\\__|____|\n", CGRN, CBLU);
-    printf("                                             _/ |                   \n");
-    printf("                                            |__/                    %s\n\n", CNRM);
+    aesthetic();
 
     //User defined port to initiate server
     unsigned short PORT;
@@ -65,7 +57,7 @@ int main(int argc , char *argv[]){
     fd_set incoming;
     int incoming_sock = 0;
     int length_addr = sizeof(addr);
-    int client_sock[client_limit] = { 0 };
+    int client_sock = 0;
 
     int new_sd;
     int max_sd;
@@ -74,7 +66,6 @@ int main(int argc , char *argv[]){
 
     char listings[4096];
     FILE * write;
-    //write = fopen("resources.txt", "a+");
 
     //Enter infinite loop to begin accepting connection requests and data transmission
     while(1){
@@ -88,7 +79,7 @@ int main(int argc , char *argv[]){
         
         int i;
         for(i = 0; i < client_limit; i++){
-            new_sd = client_sock[i];
+            new_sd = client_sock;
 
             if(new_sd > 0)
                 FD_SET(new_sd, &incoming);
@@ -117,25 +108,17 @@ int main(int argc , char *argv[]){
                 else if(listings[i] == '\0')
                     break;
             }
-            write = fopen("resources.txt", "a+");
+            write = fopen("data/local_resources.txt", "a+");
             fprintf(write, "%s\n", listings);
             fclose(write);
             
-
-            /*for(i = 0; i < client_limit; i++){
-                if(!client_sock[i]){
-                    client_sock[i] = incoming_sock;
-                    break;
-                }
-            }*/
             char receipt[64];
             sprintf(receipt, "\n%d", amount);
-            strcat(receipt, " resource listing(s) succesfully received!\n\0");
+            strcat(receipt, " resource listing(s) succesfully received!\n");
 
             send(incoming_sock, receipt, strlen(receipt), 0);
             printf("%s[+]Confirmation Receipt for %s%d%s listing(s) sent to Client!%s\n", CGRN, CBLU, amount, CGRN, CNRM);
             amount = 0;
-            //listings = '\0';
 
         }
         
@@ -144,4 +127,18 @@ int main(int argc , char *argv[]){
     }
 
     return 0;
+}
+
+
+
+void aesthetic(){
+    //Aesthetic detail
+    printf("%s  ____  _____ ____     %s        _____           _           _   ___  \n", CGRN, CBLU);
+    printf("%s |___ \\|  __ \\___ \\    %s       |  __ \\         (_)         | | |__ \\ \n", CGRN, CBLU);
+    printf("%s   __) | |  | |__) | %s ______ %s | |__) | __ ___  _  ___  ___| |_   ) |\n", CGRN, CNRM, CBLU);
+    printf("%s  |__ <| |  | |__ <  %s|______|%s |  ___/ '__/ _ \\| |/ _ \\/ __| __| / / \n", CGRN, CNRM, CBLU);
+    printf("%s  ___) | |__| |__) |   %s       | |   | | | (_) | |  __/ (__| |_ / /_ \n", CGRN, CBLU);
+    printf("%s |____/|_____/____/    %s       |_|   |_|  \\___/| |\\___|\\___|\\__|____|\n", CGRN, CBLU);
+    printf("                                             _/ |                   \n");
+    printf("                                            |__/                    %s\n\n", CNRM);
 }

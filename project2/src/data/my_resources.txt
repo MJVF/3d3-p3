@@ -1,6 +1,5 @@
 Milk, 60-Litres, $0.50/litre, Joe's Farm, 15-05-2023
 Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
 Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
-
 Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
 Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
