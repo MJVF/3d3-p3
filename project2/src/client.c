@@ -64,7 +64,7 @@ void beginClient(){
         if(connect(client_sock, (struct sockaddr*)&addr, sizeof(addr)) != -1)
             break;
         numFail++;
-        printf("%s[-]Error Connecting, attempt %i/5, Retrying connection%s\n", CRED, numFail, CNRM);
+        printf("%s[-]Error Connecting, attempt %i/5,%s\n", CRED, numFail, CNRM);
         if(numFail == 5){
             printf("%s[-]Could not Connect... Exiting program!%s\n", CRED, CNRM);
             return;
@@ -72,26 +72,59 @@ void beginClient(){
         sleep(1);
     }printf("%s[+]Connection to host succesful!%s\n", CGRN, CNRM);
 
-    FILE*  resources= fopen("data/my_resources.txt", "r");
-    char data[MAX] = {0};
+    //Begin server-client authentification
+    FILE* credentials = fopen("data/my_credentials.txt", "r");
+    char data[64];
     char c;
     int i = 0;
     while(c != EOF){
-        c = fgetc(resources);
+        c = fgetc(credentials);
         if(c == EOF)
             break;
         data[i] = c;
         i++;
     }
-    data[i+1] = '\0';
+    data[i] = '\0';
     if(send(client_sock, data, sizeof(data), 0) == -1){
         printf("%s[-]Unknown result of file transmission... Local Error detected!%s\n", CRED, CNRM);
-    }else printf("%s[+]File succesfuly sent to host%s\n", CGRN, CNRM);
+    }else printf("%s[+]Authentification request sent to host%s\n", CGRN, CNRM);
 
     char received[MAX];
     if(read(client_sock, received, MAX) == -1){
         printf("%s[-]Error while receiving data through port %s%i%s... Data stream interrupted!%s\n", CRED, CBLU, port, CRED, CNRM);
     }else printf("%s\n", received);
+    fclose(credentials);
+
+
+    
+    bzero(received, MAX);
+    char listings[MAX];
+    //Send local resource information to server
+    FILE* resources = fopen("data/my_resources.txt", "r");
+    i = 0;
+    c = '\0';
+    while(c != EOF){
+        c = fgetc(resources);
+        if(c == EOF)
+            break;
+        listings[i] = c;
+        i++;
+    }
+    listings[i] = '\0';
+    fclose(resources);
+    //printf("%s", listings);
+    if(send(client_sock, listings, sizeof(listings), 0) == -1){
+        printf("%s[-]Unknown result of file transmission... Local Error detected!%s\n", CRED, CNRM);
+    }else printf("%s[+]Resource listings successfuly sent to host%s\n", CGRN, CNRM);
+
+
+    if(read(client_sock, received, MAX) == -1){
+        printf("%s[-]Error while receiving data through port %s%i%s... Data stream interrupted!%s\n", CRED, CBLU, port, CRED, CNRM);
+    }
+    FILE* database = fopen("data/local_resources.txt", "a+");
+    fprintf(database, "%s\n", received);
+    fclose(database);
+
     
     close(client_sock);
 

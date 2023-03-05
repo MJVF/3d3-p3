@@ -6,7 +6,7 @@
 #define CGRN  "\x1B[32m"
 #define CBLU  "\x1B[34m"
 
-#define client_limit 50
+#define MAX 2048
 
 int main(int argc , char *argv[]){
 
@@ -61,32 +61,33 @@ int main(int argc , char *argv[]){
 
     int new_sd;
     int max_sd;
-    int received;
     int amount = 0;
 
-    char listings[4096];
-    FILE * write;
+    int i;
+    char c;
+    int auth;
+    char listings[MAX];
+    FILE* database;
+    char receipt[64];
+    char resources[MAX];
+    char data[MAX];
 
     //Enter infinite loop to begin accepting connection requests and data transmission
     while(1){
-
+        init:
         //Reset socket inbetween different client communications
         FD_ZERO(&incoming);
         FD_SET(server_sock, &incoming);
 
-        //define different socked descriptors
+        //define different socket descriptors
         max_sd = server_sock;
-        
-        int i;
-        for(i = 0; i < client_limit; i++){
-            new_sd = client_sock;
+        new_sd = client_sock;
 
-            if(new_sd > 0)
-                FD_SET(new_sd, &incoming);
+        if(new_sd > 0)
+            FD_SET(new_sd, &incoming);
             
-            if(new_sd > server_sock)
-                max_sd = new_sd;
-        }
+        if(new_sd > server_sock)
+            max_sd = new_sd;
 
         //Wait for activity on potential sockets, produce error if errno code is not EINTR (i.e failure to select socket)
         if(select(max_sd + 1, &incoming, NULL, NULL, NULL) < 0 && errno != EINTR){
@@ -99,25 +100,75 @@ int main(int argc , char *argv[]){
             //Accept the incoming socket request and send message to the client
             incoming_sock = accept(server_sock, (struct sockaddr *)&addr, (socklen_t*)&length_addr);
             printf("\n%s[*]Connection requested on socket %s%d%s\n   port: %s%d%s\n     ip: %s%s%s\n\n",CGRN,CBLU, incoming_sock ,CGRN,CBLU, ntohs(addr.sin_port) ,CGRN,CBLU, inet_ntoa(addr.sin_addr) ,CNRM);
-            received = read(incoming_sock, listings, 4096);
 
+            if(read(incoming_sock, listings, MAX) == -1){
+                printf("%s[-]Error while receiving data through port %s%i%s... Data stream interrupted, closing socket!%s\n", CRED, CBLU, atoi(argv[1]), CRED, CNRM);
+                close(incoming_sock);
+                goto init;
+            }
+            
+            //Authentify client's credentials
+            bzero(receipt, 64);
+            auth = checkUser(listings);
+            if(auth < 0){ //auth = -1, no local repository of valid credentials
+                close(incoming_sock);   
+                return 0;
+            }
+            if(auth > 0){ //auth = 1, invalid client credentials
+                printf("%s[-]Warning Invalid Credentials, terminating connection!%s\n", CRED, CNRM);
+                sprintf(receipt, "%s\n[-]Invalid Credentials... Access Denied!%s\n", CRED, CNRM);
+                send(incoming_sock, receipt, strlen(receipt), 0);
+                close(incoming_sock);
+                goto init;
+            }
+            printf("%s[+]Authentification Success, beginning data stream with client!%s\n", CGRN, CNRM); //auth = 0, valid credentials
+            sprintf(receipt, "%s\n[+]Credentials Validated, initiating communications!%s\n", CGRN, CNRM);
+            send(incoming_sock, receipt, strlen(receipt), 0);
+            bzero(listings, MAX);
+
+            
+            //receive the clients resource information
+            if(read(incoming_sock, listings, MAX) == -1){
+                printf("%s[-]Error while receiving data through port %s%i%s... Data stream interrupted, closing socket!%s\n", CRED, CBLU, atoi(argv[1]), CRED, CNRM);
+                close(incoming_sock);
+                goto init;
+            }
+
+            //printf("%s", listings);
             //count the number of resource listings received
-            for(i = 0; i < 4096; i++){
+            for(i = 0; i < MAX; i++){
                 if(listings[i] == '\n' || listings[i] == '\r')
                     amount++;
                 else if(listings[i] == '\0')
                     break;
             }
-            write = fopen("data/local_resources.txt", "a+");
-            fprintf(write, "%s\n", listings);
-            fclose(write);
-            
-            char receipt[64];
+            database = fopen("data/local_resources.txt", "a+");
+            fprintf(database, "%s\n", listings);
+            fclose(database);
+
+            bzero(receipt, 64);
             sprintf(receipt, "\n%d", amount);
             strcat(receipt, " resource listing(s) succesfully received!\n");
 
-            send(incoming_sock, receipt, strlen(receipt), 0);
-            printf("%s[+]Confirmation Receipt for %s%d%s listing(s) sent to Client!%s\n", CGRN, CBLU, amount, CGRN, CNRM);
+
+            database = fopen("data/local_resources.txt", "r");
+            i = 0;
+            bzero(resources, MAX);
+            while(c != EOF){
+                c = fgetc(database);
+                if(c == EOF)
+                    break;
+                resources[i] = c;
+                i++;
+            }
+            resources[i] = '\0';
+
+            bzero(data, MAX);
+            strcat(data, receipt);
+            strcat(data, resources);
+
+            send(incoming_sock, data, strlen(data), 0);
+            printf("%s[+]Updated client's database!\n[+]Confirmation Receipt for %s%d%s listing(s) sent to Client!%s\n", CGRN, CBLU, amount, CGRN, CNRM);
             amount = 0;
 
         }
@@ -127,6 +178,66 @@ int main(int argc , char *argv[]){
     }
 
     return 0;
+}
+
+
+int checkUser(char details[2048]){
+    char name[64];
+    char pass[64];
+    char in_name[64];
+    char in_pass[64];
+    bzero(in_name, 64);
+    bzero(in_pass, 64);
+    
+    char c;
+    FILE* credentials = fopen("data/trusted_credentials.txt", "r");
+
+    if(!credentials){
+        printf("%s[-]Error! trusted_credentials.txt not found... Terminating Program!%s\n", CRED, CNRM);
+        fclose(credentials);
+        return -1;
+    }
+
+    //Read in the credentials sent by the client requesting to connect to the server
+    int i = 0;
+    int j = 0;
+    while(details[i] != ','){ //Username
+        in_name[i] = details[i];
+        i++;
+    }in_name[i] = '\0';
+    i++;
+    while(details[i]){ //Password
+        in_pass[j] = details[i];
+        i++;
+        j++;
+    }in_pass[j] = '\0';
+    
+    //Compare the clients credentials to the local list of trusted credentials
+    while(c != EOF){
+        i = 0;
+        j = 0;
+        bzero(name, 64);
+        bzero(pass, 64);
+        c = fgetc(credentials);
+        while(c != ',' && c != EOF){ //Username
+            name[i] = c;
+            i++;
+            c = fgetc(credentials);
+        }name[i] = '\0';
+        c = fgetc(credentials);
+        while(c != '\n' && c != '\r' && c != EOF){ //Password
+            pass[j] = c;
+            j++;
+            c = fgetc(credentials);
+        }pass[j] = '\0';
+
+        if(strcmp(in_name, name) == 0 && strcmp(in_pass, pass) == 0){
+            fclose(credentials);
+            return 0;
+        }
+    }
+    fclose(credentials);
+    return 1; //No credentials match
 }
 
 

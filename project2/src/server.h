@@ -18,7 +18,7 @@
 
 void aesthetic();
 
-int checkUser(char details[1024]);
+int checkUser(char details[2048]);
 
 
 #endif
