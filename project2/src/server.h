@@ -17,11 +17,7 @@
 #include <sys/time.h>
 
 
-
-
-
-
-
+int checkUser(char details[1024]);
 
 
 #endif

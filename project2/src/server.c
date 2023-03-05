@@ -32,7 +32,7 @@ int main(int argc , char *argv[]){
     //track if intiialisation functions have failed.
     int error = 0;
 
-    //from <netinet/in.h>, this struct handles connections to inet addresses
+    //from <arpa/inet.h>, this struct handles connections to inet addresses
     struct sockaddr_in addr;
         addr.sin_family = AF_INET; //Address family for IPv4 connections
         addr.sin_port = PORT; //Define socket port
@@ -142,7 +142,6 @@ int main(int argc , char *argv[]){
         close(incoming_sock);
 
     }
-    //fclose(write);
 
     return 0;
 }
