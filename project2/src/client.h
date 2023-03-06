@@ -16,9 +16,10 @@
 #include <sys/types.h>
 #include <sys/time.h>
 
-void aesthetic();
-
 void beginServer();
 void beginClient();
+int checkUser(char details[2048]);
+void aesthetic();
+
 
 #endif

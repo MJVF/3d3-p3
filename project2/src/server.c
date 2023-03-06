@@ -21,8 +21,6 @@ int main(int argc , char *argv[]){
 		exit(EXIT_FAILURE);
 	}
 
-    //track if intiialisation functions have failed.
-    int error = 0;
 
     //from <arpa/inet.h>, this struct handles connections to inet addresses
     struct sockaddr_in addr;
@@ -42,9 +40,9 @@ int main(int argc , char *argv[]){
     setsockopt(server_sock, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, (char *)&option, sizeof(option));
 
     //Bind Socket to the specified PORT
-    error = bind(server_sock, (struct sockaddr *)&addr, sizeof(addr));
-    if(error < 0){
+    if(bind(server_sock, (struct sockaddr *)&addr, sizeof(addr)) < 0){
         printf("%s[-]ERROR: Failed to bind Socket to PORT... Aborting!%s\n", CRED, CNRM);
+        close(server_sock);
         exit(EXIT_FAILURE);
     }printf("%s[+]Socket %s%d%s succesfully bound to PORT %s%d%s\n", CGRN, CBLU, server_sock, CGRN, CBLU, ntohs(PORT),CNRM);
 

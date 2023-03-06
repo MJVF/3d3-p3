@@ -16,9 +16,9 @@
 #include <sys/types.h>
 #include <sys/time.h>
 
-void aesthetic();
 
 int checkUser(char details[2048]);
+void aesthetic();
 
 
 #endif
