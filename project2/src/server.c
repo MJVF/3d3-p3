@@ -134,7 +134,6 @@ int main(int argc , char *argv[]){
                 goto init;
             }
 
-            //printf("%s", listings);
             //count the number of resource listings received
             for(i = 0; i < MAX; i++){
                 if(listings[i] == '\n' || listings[i] == '\r')
@@ -142,7 +141,7 @@ int main(int argc , char *argv[]){
                 else if(listings[i] == '\0')
                     break;
             }
-            database = fopen("data/local_resources.txt", "a+");
+            database = fopen("data/server_resources.txt", "a+");
             fprintf(database, "%s\n", listings);
             fclose(database);
 
@@ -151,7 +150,7 @@ int main(int argc , char *argv[]){
             strcat(receipt, " resource listing(s) succesfully received!\n");
 
 
-            database = fopen("data/local_resources.txt", "r");
+            database = fopen("data/server_resources.txt", "r");
             i = 0;
             bzero(resources, MAX);
             while(c != EOF){

@@ -122,7 +122,16 @@ void beginClient(){
         printf("%s[-]Error while receiving data through port %s%i%s... Data stream interrupted!%s\n", CRED, CBLU, port, CRED, CNRM);
     }
     FILE* database = fopen("data/local_resources.txt", "a+");
-    fprintf(database, "%s\n", received);
+    i = 0;
+    c = '\0';
+    printf("%s", CBLU);
+    while(received[i] != '\n' || received[i] != '\r'){
+        printf("%c", received[i]);
+        i++;
+        if(received[i] == '\n' || received[i] == '\r')
+            break;
+    }printf("%s\n\n", CNRM);
+    fprintf(database, "%s\n", &received[i]);
     fclose(database);
 
     
