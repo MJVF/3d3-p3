@@ -343,14 +343,12 @@ int checkUser(char details[2048]){
     return 1; //No credentials match
 }
 
-
-
 void aesthetic(){
     //Aesthetic detail
     printf("%s  ____  _____ ____     %s        _____           _           _   ___  \n", CGRN, CBLU);
     printf("%s |___ \\|  __ \\___ \\    %s       |  __ \\         (_)         | | |__ \\ \n", CGRN, CBLU);
     printf("%s   __) | |  | |__) | %s ______ %s | |__) | __ ___  _  ___  ___| |_   ) |\n", CGRN, CNRM, CBLU);
-    printf("%s  |__ <| |  | |__ <  %s|______|%s |  ___/ '__/ _ \\| |/ _ \\/ __| __| / / \n", CGRN, CNRM, CBLU);
+    printf("%s  |__ <| |  | |__ <  %s|client|%s |  ___/ '__/ _ \\| |/ _ \\/ __| __| / / \n", CGRN, CNRM, CBLU);
     printf("%s  ___) | |__| |__) |   %s       | |   | | | (_) | |  __/ (__| |_ / /_ \n", CGRN, CBLU);
     printf("%s |____/|_____/____/    %s       |_|   |_|  \\___/| |\\___|\\___|\\__|____|\n", CGRN, CBLU);
     printf("                                             _/ |                   \n");

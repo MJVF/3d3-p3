@@ -1,0 +1,60 @@
+  ____  _____ ____             _____           _           _   ___  
+ |___ \|  __ \___ \           |  __ \         (_)         | | |__ \ 
+   __) | |  | |__) |  ______  | |__) | __ ___  _  ___  ___| |_   ) |
+  |__ <| |  | |__ <  |how to| |  ___/ '__/ _ \| |/ _ \/ __| __| / / 
+  ___) | |__| |__) |          | |   | | | (_) | |  __/ (__| |_ / /_ 
+ |____/|_____/____/           |_|   |_|  \___/| |\___|\___|\__|____|
+                                             _/ |                   
+                                            |__/ 
+
+Students: Michael John Flynn - 20331930 
+	  Yatharth Jain      - 22330952
+
+
+
+Prerequisits:
+	- This code was wrote, tested, and compiled for Unix Machines as the GNU libraries chosen are specifically for Unix machines.
+	- Testing was conducted on MacOS and Ubuntu 20.04
+	- You will require "make", "net-tools", & "gcc" to build and run this project. (*net-tools is used for ifconfig to find your machines inet IPv4 address)
+		- These can all be installed with the apt (linux) or homebrew (MacOS) package managers.	
+
+Compilation:
+	Ensuring you are in the "project_2" directory, run the follwing command:
+		- $ make
+	You should see command line outputs detailing that the "client" and "server" executables were compiled.
+	There should be executables within the client and server directories named client and server respectively.
+
+
+Execution:
+    Server:
+	- Within the terminal, run, $ ifconfig , and note the inet address of your wireless adapter.
+		- If running the client on the same machine as the server, you can skip this step.
+	- Enter the server directory: $ cd server
+	- Run the executable with the command line argument being the port you wish to use: $ ./server ####
+		- A port that usually worked for us was #8888 ( $ ./server 8888 )
+	- The server is now live, it will continue to run until the process is killed by pressing "ctrl + c"
+
+    Client:
+	- From a new terminal session, or a different machine on the same network as the server machine, enter the client directory:
+		- $ cd client
+	- Run the executable as follows:
+		- $ ./client
+
+
+	You will now receive the following prompt: [*]Host for another client? [y/N]
+	
+	- Entering y will initiate temporary server mode should the central server go down, every client can send information to other
+	  clients, should eachothers inet addresses be known.
+		- Upon starting the temporary server, you will be prompted to enter a port number, again 8888 worked well for us.
+		- Another client can now connect and the database held by the temporary-server will be distributed to them.
+
+	- Simple hitting enter or any other one character input will initiate client mode.
+		- Here you are prompted to input the server's inet address.
+			- (Or if on the same machine enter 127.0.0.1, the generic localhost address.)
+		- Now enter the same port used by your server.
+		- The server will now automatically validate the client's credentials and the data transfer will run automatically.
+		- The client will automatically shutdown once it is finished. 
+
+
+"data" folders:
+	
