@@ -234,7 +234,17 @@ void beginClient(){
     char received[MAX];
     if(read(client_sock, received, MAX) == -1){
         printf("%s[-]Error while receiving data through port %s%i%s... Data stream interrupted!%s\n", CRED, CBLU, port, CRED, CNRM);
-    }else printf("%s\n", received);
+    }
+    if(received[7] != '+'){
+
+        if(received[7] == '-')
+            printf("%s", received);
+        else printf("%s[-]Unable to complete authentification!%s\n", CRED, CNRM);
+        
+        printf("%s[-]Killing program!%s\n", CRED, CNRM);
+        close(client_sock);
+        return;
+    }
     fclose(credentials);
 
 
@@ -297,7 +307,6 @@ int checkUser(char details[2048]){
 
     if(!credentials){
         printf("%s[-]Error! trusted_credentials.txt not found... Terminating Program!%s\n", CRED, CNRM);
-        fclose(credentials);
         return -1;
     }
 

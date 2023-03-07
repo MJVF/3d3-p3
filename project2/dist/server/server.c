@@ -191,7 +191,6 @@ int checkUser(char details[2048]){
 
     if(!credentials){
         printf("%s[-]Error! trusted_credentials.txt not found... Terminating Program!%s\n", CRED, CNRM);
-        fclose(credentials);
         return -1;
     }
 
