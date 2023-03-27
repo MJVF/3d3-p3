@@ -57,4 +57,15 @@ Execution:
 
 
 "data" folders:
+	The following describes the purpose of each .txt file within the "data" folders.
 	
+	Server:
+		- server_resources.txt: A full list of all resource information sent in by clients to the main server.
+		- trusted_credentials.txt: A list of username and password pairs that have access to add to and retrieve the database.
+
+	Client:
+		- local_resources.txt: The client's copy of the main servers full database. When the client behaves as a temporary server, this file is distributed
+					     to other clients.
+		- my_resources.txt: The client's list of available resources it has to offer to the community.
+		- my_credentials.txt: The client's username and password pair to be validated by the server/client.
+		- trusted_credentials.txt: A list of username and password pairs that have access to add to and retrieve the database.
