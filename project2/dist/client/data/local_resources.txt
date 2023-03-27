@@ -1,66 +1,29 @@
 
+Milk, 60-Litres, $0.50/litre, Joe's Farm, 15-05-2023
+Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
+Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
+Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
+Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
+
+Eggs, 12 dozen, $6/dozen, Jane's Farm, 16-05-2023
+Oil, 7kg, $4/litre, Jane's Farm, 17-05-2023
+Tomatoes, 19kg, $2/500g, Jane's Farm, 17-05-2023
+Honey, 4kg, $9/300g, Jane's Farm, 17-05-2023
+Salt, 6kg, $9/kg, Jane's Farm, 18-05-2023
+Fish, 18kg, $12/kg, Jane's Farm, 18-05-2023
+
+Milk, 60-Litres, $0.50/litre, Joe's Farm, 15-05-2023
 Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
 Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
 Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
 Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
 
 
+
+Milk, 60-Litres, $0.50/litre, Joe's Farm, 15-05-2023
 Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
 Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
 Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
 Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
 
-
-Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
-Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
-Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
-Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
-
-
-Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
-Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
-Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
-Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
-
-
-Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
-Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
-Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
-Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
-
-
-Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
-Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
-Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
-Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
-
-
-Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
-Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
-Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
-Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
-
-
-Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
-Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
-Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
-Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
-
-
-Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
-Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
-Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
-Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
-
-
-Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
-Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
-Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
-Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
-
-
-Cheese, 5kg, $2/200g, Joe's Farm, 15-05-2023
-Butter, 2kg, $1/100g, Joe's Farm, 15-05-2023
-Wheat, 37 Bundles, $3/bundle, Joe's Farm, 16-05-2023
-Flour, 50kg, $0.5/kg, Joe's Farm, 16-05-2023
 
